@@ -1,3 +1,5 @@
+const path = require('path');
+
 const express = require('express');
 
 const bodyparser = require('body-parser');
@@ -10,11 +12,17 @@ const shoproutes = require('./routes/shop');
 app.use(bodyparser.urlencoded({extended:false}));
 
 // app.use(adminroutes);
+// app.use(shoproutes);
+
 app.use('/admin',adminroutes);
-app.use(shoproutes);
+app.use('/shop',shoproutes);
+
+app.use('/',(req,res,next)=>{
+   res.send('FROM HOME PAGE');
+});
 
 app.use((req,res,next)=>{
-   res.status(404).send("<h1>Page Not Found</h1>");
+   res.status(404).sendFile(path.join(__dirname, 'views', '404.html'));
 });
 
 app.listen(3000);
